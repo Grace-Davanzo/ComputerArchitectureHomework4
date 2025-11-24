@@ -5,6 +5,7 @@
 #include <limits.h>
 #include <time.h>
 
+//DO NOT CHANGE THIS PORTION HERE BELOW
 // 32-bit integer type
 typedef int32_t sort_type;
 
@@ -16,7 +17,8 @@ void print_array(sort_type* arr, int n) {
     }
     printf("]\n");
 }
-
+//----------------------------------------------------------------------------------------------------------------
+//CHANGES TO BE DONE HERE
 // Standard Merge Logic
 void merge(sort_type* arr, sort_type* temp, int left, int mid, int right) {
     int i = left;
@@ -54,6 +56,12 @@ void baseline_merge_sort(sort_type* arr, int n) {
     merge_sort_recursive(arr, temp, 0, n - 1);
     free(temp);
 }
+
+
+
+//----------------------------------------------------------------------------------------------------------------
+
+//DO NOT CHANGE THIS PART BELOW
 
 // --- TEST CORRECTNESS ---
 bool verify_sorted(sort_type* arr, int n) {
