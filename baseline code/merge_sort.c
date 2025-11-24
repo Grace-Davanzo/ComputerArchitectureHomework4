@@ -16,9 +16,9 @@ void print_array(sort_type* arr, int n) {
         printf("%d%s", arr[i], (i < n - 1) ? ", " : "");
     }
     printf("]\n");
-}
+} 
 //----------------------------------------------------------------------------------------------------------------
-//CHANGES TO BE DONE HERE
+//CHANGES TO BE DONE HERE IN THIS SNIPPET FOR THE MERGE SORT IMPLEMENTATION
 // Standard Merge Logic
 void merge(sort_type* arr, sort_type* temp, int left, int mid, int right) {
     int i = left;
@@ -56,8 +56,6 @@ void baseline_merge_sort(sort_type* arr, int n) {
     merge_sort_recursive(arr, temp, 0, n - 1);
     free(temp);
 }
-
-
 
 //----------------------------------------------------------------------------------------------------------------
 
