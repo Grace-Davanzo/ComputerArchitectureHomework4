@@ -215,8 +215,8 @@ int main() {
 
     // HIGH RAM USAGE
     run_gb_test(4);  // Requires ~8GB RAM
-    //run_gb_test(8);  // Requires ~16GB RAM
+    run_gb_test(8);  // Requires ~16GB RAM
     //run_gb_test(10); // Requires ~20GB RAM
-    
-    return 0;
-} 
+     
+    return 0; 
+}   
