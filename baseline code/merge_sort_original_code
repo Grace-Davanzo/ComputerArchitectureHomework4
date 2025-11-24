@@ -3,10 +3,10 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <limits.h>
-#include <time.h>
+#include <time.h>   
 
 // 32-bit integer type
-typedef int32_t sort_type;
+typedef int32_t sort_type;  
 
 // Helper
 void print_array(sort_type* arr, int n) {
