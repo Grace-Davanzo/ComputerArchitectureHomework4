@@ -15,7 +15,7 @@ void print_array(sort_type* arr, int n) {
         printf("%d%s", arr[i], (i < n - 1) ? ", " : "");
     }
     printf("]\n");
-}
+} 
 
 // Standard Merge Logic
 void merge(sort_type* arr, sort_type* temp, int left, int mid, int right) {
@@ -212,4 +212,4 @@ int main() {
     //run_gb_test(10); // Requires ~20GB RAM
     
     return 0;
-}
+} 
