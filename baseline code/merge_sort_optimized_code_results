@@ -1,0 +1,378 @@
+ser@MSI:/mnt/c/Users/User/OneDrive/Columbia - Fall 2025/COMPUTER ARCHITECTURE/Homeworks/Homework 4/Computer_Architecture_Group_Homework_4/ComputerArchitectureHomework4/baseline code$ cd "/mnt/c/Users/User/OneDrive/Columbia - Fall 2025/COMPUTER ARCHITECTURE/Homeworks/Homework 4/Computer_Architecture_Group_Homework_4/ComputerArchitectureHomework4/baseline code" && gcc -O3 -fopenmp -march=native -o merge_sort_optimized merge_sort_optimized_code.c && echo "=== 1 THREAD ===" && OMP_NUM_THREADS=1 ./merge_sort_optimized && echo "=== 2 THREADS ===" && OMP_NUM_THREADS=2 ./merge_sort_optimized && echo "=== 4 THREADS ===" && OMP_NUM_THREADS=4 ./merge_sort_optimized && echo "=== 8 THREADS ===" && OMP_NUM_THREADS=8 ./merge_sort_optimized
+
+=== 1 THREAD ===
+========================================
+OPTIMIZED MERGE SORT
+Implemented by: Anurag Chatterjee
+========================================
+OpenMP Threads: 1
+Insertion Sort Threshold: 64
+Parallel Threshold: 100000
+========================================
+
+=== Running Test: Small Random (n=6) ===
+Before: [12, 7, 14, 9, 10, 11]
+After:  [7, 9, 10, 11, 12, 14]
+RESULT: PASSED [0.000001 sec]
+
+=== Running Test: 32-bit Edge Cases (n=7) ===
+Before: [2147483647, 0, -2147483648, -1, 1, 2147483646, -2147483647]
+After:  [-2147483648, -2147483647, -1, 0, 1, 2147483646, 2147483647]
+RESULT: PASSED [0.000001 sec]
+
+=== Running Test: Already Sorted (n=8) ===
+Before: [1, 2, 3, 4, 5, 6, 7, 8]
+After:  [1, 2, 3, 4, 5, 6, 7, 8]
+RESULT: PASSED [0.000000 sec]
+
+=== Running Test: Reverse Sorted (n=7) ===
+Before: [100, 90, 80, 70, 60, 50, 40]
+After:  [40, 50, 60, 70, 80, 90, 100]
+RESULT: PASSED [0.000000 sec]
+
+=== Running Test: Duplicates (n=6) ===
+Before: [5, 1, 5, 2, 5, 3]
+After:  [1, 2, 3, 5, 5, 5]
+RESULT: PASSED [0.000000 sec]
+
+=== Running Test: Large Random (100k) (n=100000) ===
+RESULT: PASSED [0.005433 sec]
+
+============================================================
+       RUNNING LARGE SCALE TEST: 1 GB
+============================================================
+[INFO] Dataset Configuration:
+   - Size:   1.0737 GB
+   - Count:  268435456 elements
+[INFO] Allocating Memory...
+[INFO] Generating random 32-bit integers...
+[INFO] Sorting...
+[INFO] Verifying correctness...
+
+[RESULT] SUCCESS!
+   - Time Taken:   23.5175 seconds
+   - Throughput:   0.0425 GB/s
+   - Est. Cost:    $0.00065327 (Total for run)
+   - COST PER GB:  $0.00065327 / GB
+     (Based on hardware rate of $0.10/hr)
+============================================================
+
+============================================================
+       RUNNING LARGE SCALE TEST: 2 GB
+============================================================
+[INFO] Dataset Configuration:
+   - Size:   2.1475 GB
+   - Count:  536870912 elements
+[INFO] Allocating Memory...
+[INFO] Generating random 32-bit integers...
+[INFO] Sorting...
+[INFO] Verifying correctness...
+
+[RESULT] SUCCESS!
+   - Time Taken:   49.2152 seconds
+   - Throughput:   0.0406 GB/s
+   - Est. Cost:    $0.00136709 (Total for run)
+   - COST PER GB:  $0.00068354 / GB
+     (Based on hardware rate of $0.10/hr)
+============================================================
+
+============================================================
+       RUNNING LARGE SCALE TEST: 4 GB
+============================================================
+[INFO] Dataset Configuration:
+   - Size:   4.2950 GB
+   - Count:  1073741824 elements
+[INFO] Allocating Memory...
+[INFO] Generating random 32-bit integers...
+[INFO] Sorting...
+[INFO] Verifying correctness...
+
+[RESULT] SUCCESS!
+   - Time Taken:   103.0593 seconds
+   - Throughput:   0.0388 GB/s
+   - Est. Cost:    $0.00286276 (Total for run)
+   - COST PER GB:  $0.00071569 / GB
+     (Based on hardware rate of $0.10/hr)
+============================================================
+=== 2 THREADS ===
+========================================
+OPTIMIZED MERGE SORT
+Implemented by: Anurag Chatterjee
+========================================
+OpenMP Threads: 2
+Insertion Sort Threshold: 64
+Parallel Threshold: 100000
+========================================
+
+=== Running Test: Small Random (n=6) ===
+Before: [12, 7, 14, 9, 10, 11]
+After:  [7, 9, 10, 11, 12, 14]
+RESULT: PASSED [0.000001 sec]
+
+=== Running Test: 32-bit Edge Cases (n=7) ===
+Before: [2147483647, 0, -2147483648, -1, 1, 2147483646, -2147483647]
+After:  [-2147483648, -2147483647, -1, 0, 1, 2147483646, 2147483647]
+RESULT: PASSED [0.000000 sec]
+
+=== Running Test: Already Sorted (n=8) ===
+Before: [1, 2, 3, 4, 5, 6, 7, 8]
+After:  [1, 2, 3, 4, 5, 6, 7, 8]
+RESULT: PASSED [0.000000 sec]
+
+=== Running Test: Reverse Sorted (n=7) ===
+Before: [100, 90, 80, 70, 60, 50, 40]
+After:  [40, 50, 60, 70, 80, 90, 100]
+RESULT: PASSED [0.000000 sec]
+
+=== Running Test: Duplicates (n=6) ===
+Before: [5, 1, 5, 2, 5, 3]
+After:  [1, 2, 3, 5, 5, 5]
+RESULT: PASSED [0.000000 sec]
+
+=== Running Test: Large Random (100k) (n=100000) ===
+RESULT: PASSED [0.002825 sec]
+
+============================================================
+       RUNNING LARGE SCALE TEST: 1 GB
+============================================================
+[INFO] Dataset Configuration:
+   - Size:   1.0737 GB
+   - Count:  268435456 elements
+[INFO] Allocating Memory...
+[INFO] Generating random 32-bit integers...
+[INFO] Sorting...
+[INFO] Verifying correctness...
+
+[RESULT] SUCCESS!
+   - Time Taken:   13.3410 seconds
+   - Throughput:   0.0750 GB/s
+   - Est. Cost:    $0.00037058 (Total for run)
+   - COST PER GB:  $0.00037058 / GB
+     (Based on hardware rate of $0.10/hr)
+============================================================
+
+============================================================
+       RUNNING LARGE SCALE TEST: 2 GB
+============================================================
+[INFO] Dataset Configuration:
+   - Size:   2.1475 GB
+   - Count:  536870912 elements
+[INFO] Allocating Memory...
+[INFO] Generating random 32-bit integers...
+[INFO] Sorting...
+[INFO] Verifying correctness...
+
+[RESULT] SUCCESS!
+   - Time Taken:   26.9396 seconds
+   - Throughput:   0.0742 GB/s
+   - Est. Cost:    $0.00074832 (Total for run)
+   - COST PER GB:  $0.00037416 / GB
+     (Based on hardware rate of $0.10/hr)
+============================================================
+
+============================================================
+       RUNNING LARGE SCALE TEST: 4 GB
+============================================================
+[INFO] Dataset Configuration:
+   - Size:   4.2950 GB
+   - Count:  1073741824 elements
+[INFO] Allocating Memory...
+[INFO] Generating random 32-bit integers...
+[INFO] Sorting...
+[INFO] Verifying correctness...
+
+[RESULT] SUCCESS!
+   - Time Taken:   56.4735 seconds
+   - Throughput:   0.0708 GB/s
+   - Est. Cost:    $0.00156871 (Total for run)
+   - COST PER GB:  $0.00039218 / GB
+     (Based on hardware rate of $0.10/hr)
+============================================================
+=== 4 THREADS ===
+========================================
+OPTIMIZED MERGE SORT
+Implemented by: Anurag Chatterjee
+========================================
+OpenMP Threads: 4
+Insertion Sort Threshold: 64
+Parallel Threshold: 100000
+========================================
+
+=== Running Test: Small Random (n=6) ===
+Before: [12, 7, 14, 9, 10, 11]
+After:  [7, 9, 10, 11, 12, 14]
+RESULT: PASSED [0.000000 sec]
+
+=== Running Test: 32-bit Edge Cases (n=7) ===
+Before: [2147483647, 0, -2147483648, -1, 1, 2147483646, -2147483647]
+After:  [-2147483648, -2147483647, -1, 0, 1, 2147483646, 2147483647]
+RESULT: PASSED [0.000000 sec]
+
+=== Running Test: Already Sorted (n=8) ===
+Before: [1, 2, 3, 4, 5, 6, 7, 8]
+After:  [1, 2, 3, 4, 5, 6, 7, 8]
+RESULT: PASSED [0.000000 sec]
+
+=== Running Test: Reverse Sorted (n=7) ===
+Before: [100, 90, 80, 70, 60, 50, 40]
+After:  [40, 50, 60, 70, 80, 90, 100]
+RESULT: PASSED [0.000000 sec]
+
+=== Running Test: Duplicates (n=6) ===
+Before: [5, 1, 5, 2, 5, 3]
+After:  [1, 2, 3, 5, 5, 5]
+RESULT: PASSED [0.000000 sec]
+
+=== Running Test: Large Random (100k) (n=100000) ===
+RESULT: PASSED [0.003076 sec]
+
+============================================================
+       RUNNING LARGE SCALE TEST: 1 GB
+============================================================
+[INFO] Dataset Configuration:
+   - Size:   1.0737 GB
+   - Count:  268435456 elements
+[INFO] Allocating Memory...
+[INFO] Generating random 32-bit integers...
+[INFO] Sorting...
+[INFO] Verifying correctness...
+
+[RESULT] SUCCESS!
+   - Time Taken:   7.6848 seconds
+   - Throughput:   0.1301 GB/s
+   - Est. Cost:    $0.00021347 (Total for run)
+   - COST PER GB:  $0.00021347 / GB
+     (Based on hardware rate of $0.10/hr)
+============================================================
+
+============================================================
+       RUNNING LARGE SCALE TEST: 2 GB
+============================================================
+[INFO] Dataset Configuration:
+   - Size:   2.1475 GB
+   - Count:  536870912 elements
+[INFO] Allocating Memory...
+[INFO] Generating random 32-bit integers...
+[INFO] Sorting...
+[INFO] Verifying correctness...
+
+[RESULT] SUCCESS!
+   - Time Taken:   19.3038 seconds
+   - Throughput:   0.1036 GB/s
+   - Est. Cost:    $0.00053622 (Total for run)
+   - COST PER GB:  $0.00026811 / GB
+     (Based on hardware rate of $0.10/hr)
+============================================================
+
+============================================================
+       RUNNING LARGE SCALE TEST: 4 GB
+============================================================
+[INFO] Dataset Configuration:
+   - Size:   4.2950 GB
+   - Count:  1073741824 elements
+[INFO] Allocating Memory...
+[INFO] Generating random 32-bit integers...
+[INFO] Sorting...
+[INFO] Verifying correctness...
+
+[RESULT] SUCCESS!
+   - Time Taken:   40.1050 seconds
+   - Throughput:   0.0997 GB/s
+   - Est. Cost:    $0.00111403 (Total for run)
+   - COST PER GB:  $0.00027851 / GB
+     (Based on hardware rate of $0.10/hr)
+============================================================
+=== 8 THREADS ===
+========================================
+OPTIMIZED MERGE SORT
+Implemented by: Anurag Chatterjee
+========================================
+OpenMP Threads: 8
+Insertion Sort Threshold: 64
+Parallel Threshold: 100000
+========================================
+
+=== Running Test: Small Random (n=6) ===
+Before: [12, 7, 14, 9, 10, 11]
+After:  [7, 9, 10, 11, 12, 14]
+RESULT: PASSED [0.000000 sec]
+
+=== Running Test: 32-bit Edge Cases (n=7) ===
+Before: [2147483647, 0, -2147483648, -1, 1, 2147483646, -2147483647]
+After:  [-2147483648, -2147483647, -1, 0, 1, 2147483646, 2147483647]
+RESULT: PASSED [0.000000 sec]
+
+=== Running Test: Already Sorted (n=8) ===
+Before: [1, 2, 3, 4, 5, 6, 7, 8]
+After:  [1, 2, 3, 4, 5, 6, 7, 8]
+RESULT: PASSED [0.000000 sec]
+
+=== Running Test: Reverse Sorted (n=7) ===
+Before: [100, 90, 80, 70, 60, 50, 40]
+After:  [40, 50, 60, 70, 80, 90, 100]
+RESULT: PASSED [0.000000 sec]
+
+=== Running Test: Duplicates (n=6) ===
+Before: [5, 1, 5, 2, 5, 3]
+After:  [1, 2, 3, 5, 5, 5]
+RESULT: PASSED [0.000000 sec]
+
+=== Running Test: Large Random (100k) (n=100000) ===
+RESULT: PASSED [0.003781 sec]
+
+============================================================
+       RUNNING LARGE SCALE TEST: 1 GB
+============================================================
+[INFO] Dataset Configuration:
+   - Size:   1.0737 GB
+   - Count:  268435456 elements
+[INFO] Allocating Memory...
+[INFO] Generating random 32-bit integers...
+[INFO] Sorting...
+[INFO] Verifying correctness...
+
+[RESULT] SUCCESS!
+   - Time Taken:   7.8883 seconds
+   - Throughput:   0.1268 GB/s
+   - Est. Cost:    $0.00021912 (Total for run)
+   - COST PER GB:  $0.00021912 / GB
+     (Based on hardware rate of $0.10/hr)
+============================================================
+
+============================================================
+       RUNNING LARGE SCALE TEST: 2 GB
+============================================================
+[INFO] Dataset Configuration:
+   - Size:   2.1475 GB
+   - Count:  536870912 elements
+[INFO] Allocating Memory...
+[INFO] Generating random 32-bit integers...
+[INFO] Sorting...
+[INFO] Verifying correctness...
+
+[RESULT] SUCCESS!
+   - Time Taken:   13.7052 seconds
+   - Throughput:   0.1459 GB/s
+   - Est. Cost:    $0.00038070 (Total for run)
+   - COST PER GB:  $0.00019035 / GB
+     (Based on hardware rate of $0.10/hr)
+============================================================
+
+============================================================
+       RUNNING LARGE SCALE TEST: 4 GB
+============================================================
+[INFO] Dataset Configuration:
+   - Size:   4.2950 GB
+   - Count:  1073741824 elements
+[INFO] Allocating Memory...
+[INFO] Generating random 32-bit integers...
+[INFO] Sorting... 
+[INFO] Verifying correctness...
+
+[RESULT] SUCCESS!
+   - Time Taken:   28.5950 seconds
+   - Throughput:   0.1399 GB/s
+   - Est. Cost:    $0.00079431 (Total for run)
+   - COST PER GB:  $0.00019858 / GB
+     (Based on hardware rate of $0.10/hr) 
+============================================================  
