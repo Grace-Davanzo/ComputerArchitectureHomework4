@@ -21,12 +21,95 @@ void print_array(sort_type* arr, int n) {
 //----------------------------------------------------------------------------------------------------------------
 //CHANGES TO BE DONE HERE IN THIS SNIPPET FOR THE MERGE SORT IMPLEMENTATION
 
-// Standard Merge Logic
-void merge(sort_type* arr, sort_type* temp, int left, int mid, int right) {
+// // Standard Merge Logic
+// void merge(sort_type* arr, sort_type* temp, int left, int mid, int right) {
+//     int i = left;
+//     int j = mid + 1;
+//     int k = left;
+
+//     while (i <= mid && j <= right) {
+//         if (arr[i] <= arr[j]) {
+//             temp[k++] = arr[i++];
+//         } else {
+//             temp[k++] = arr[j++];
+//         }
+//     }
+
+//     while (i <= mid) temp[k++] = arr[i++];
+//     while (j <= right) temp[k++] = arr[j++];
+//     for (i = left; i <= right; i++) arr[i] = temp[i];
+// }
+
+// // Recursive Sort
+// void merge_sort_recursive(sort_type* arr, sort_type* temp, int left, int right) {
+//     if (left < right) {
+//         int mid = left + (right - left) / 2;
+//         merge_sort_recursive(arr, temp, left, mid);
+//         merge_sort_recursive(arr, temp, mid + 1, right);
+//         merge(arr, temp, left, mid, right);
+//     }
+// }
+
+// // Main Entry Point
+// void baseline_merge_sort(sort_type* arr, int n) {
+//     if (n <= 1) return;
+//     sort_type* temp = (sort_type*)malloc(n * sizeof(sort_type));
+//     if (!temp) { fprintf(stderr, "Malloc failed\n"); exit(1); }
+//     merge_sort_recursive(arr, temp, 0, n - 1);
+//     free(temp);
+// }
+
+
+//CHANGES TO BE DONE HERE IN THIS SNIPPET FOR THE MERGE SORT IMPLEMENTATION
+// OPTIMIZED PARALLEL MERGE SORT - Anurag Chatterjee
+// 
+// Optimizations Implemented:
+//   1. OpenMP Task Parallelism - Sort left/right halves in parallel on multiple cores
+//   2. Hybrid Algorithm - Use insertion sort for small subarrays (cache-friendly)
+//   3. Early Termination - Skip merge if subarrays are already in order
+//   4. Memory Optimization - Use memcpy for faster bulk memory operations
+//
+// Architectural Features Exploited:
+//   - Multi-core CPU parallelism via OpenMP tasks
+//   - L1/L2 cache optimization via insertion sort threshold (64 elements = 256 bytes fits in cache)
+//   - Reduced branch mispredictions via early termination
+//   - Optimized memory bandwidth via memcpy instead of element-by-element copy
+
+#include <omp.h>
+#include <string.h>
+
+// ============== TUNABLE PARAMETERS ==============
+#define INSERTION_SORT_THRESHOLD 64      // Use insertion sort for arrays <= 64 elements
+                                         // 64 * 4 bytes = 256 bytes (fits in L1 cache line)
+#define PARALLEL_THRESHOLD 100000        // Only use parallel tasks for arrays > 100K elements
+                                         // Avoids parallelization overhead for small arrays
+// ================================================
+
+// Insertion sort for small subarrays
+// Why: For small arrays, insertion sort has lower overhead than merge sort
+//      and exhibits excellent cache locality (sequential memory access)
+static void insertion_sort(sort_type* arr, int left, int right) {
+    for (int i = left + 1; i <= right; i++) {
+        sort_type key = arr[i];
+        int j = i - 1;
+        
+        // Shift elements greater than key to the right
+        while (j >= left && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+}
+
+// Optimized merge function
+// Stability: arr[i] <= arr[j] ensures equal elements from left subarray come first
+static void merge(sort_type* arr, sort_type* temp, int left, int mid, int right) {
     int i = left;
     int j = mid + 1;
     int k = left;
 
+    // Merge into temporary array (stable: left element wins on tie)
     while (i <= mid && j <= right) {
         if (arr[i] <= arr[j]) {
             temp[k++] = arr[i++];
@@ -35,30 +118,117 @@ void merge(sort_type* arr, sort_type* temp, int left, int mid, int right) {
         }
     }
 
+    // Copy remaining elements from left subarray
     while (i <= mid) temp[k++] = arr[i++];
+    
+    // Copy remaining elements from right subarray
     while (j <= right) temp[k++] = arr[j++];
-    for (i = left; i <= right; i++) arr[i] = temp[i];
+
+    // OPTIMIZATION: Use memcpy for faster bulk copy back to original array
+    // memcpy is optimized by the compiler/CPU for large memory transfers
+    memcpy(arr + left, temp + left, (right - left + 1) * sizeof(sort_type));
 }
 
-// Recursive Sort
-void merge_sort_recursive(sort_type* arr, sort_type* temp, int left, int right) {
+// Sequential merge sort (used for small arrays or when parallel overhead not worth it)
+static void merge_sort_sequential(sort_type* arr, sort_type* temp, int left, int right) {
+    // OPTIMIZATION 2: Hybrid algorithm - use insertion sort for small subarrays
+    if (right - left + 1 <= INSERTION_SORT_THRESHOLD) {
+        insertion_sort(arr, left, right);
+        return;
+    }
+    
     if (left < right) {
         int mid = left + (right - left) / 2;
-        merge_sort_recursive(arr, temp, left, mid);
-        merge_sort_recursive(arr, temp, mid + 1, right);
+        
+        // Recursively sort left and right halves
+        merge_sort_sequential(arr, temp, left, mid);
+        merge_sort_sequential(arr, temp, mid + 1, right);
+        
+        // OPTIMIZATION 3: Early termination - skip merge if already sorted
+        // If the last element of left subarray <= first element of right subarray,
+        // the entire array is already in sorted order
+        if (arr[mid] <= arr[mid + 1]) {
+            return;
+        }
+        
         merge(arr, temp, left, mid, right);
     }
 }
 
-// Main Entry Point
-void baseline_merge_sort(sort_type* arr, int n) {
-    if (n <= 1) return;
-    sort_type* temp = (sort_type*)malloc(n * sizeof(sort_type));
-    if (!temp) { fprintf(stderr, "Malloc failed\n"); exit(1); }
-    merge_sort_recursive(arr, temp, 0, n - 1);
-    free(temp);
+// Parallel merge sort using OpenMP tasks
+// OPTIMIZATION 1: Multi-threaded parallel sorting
+static void merge_sort_parallel(sort_type* arr, sort_type* temp, int left, int right, int depth) {
+    // Use insertion sort for small subarrays
+    if (right - left + 1 <= INSERTION_SORT_THRESHOLD) {
+        insertion_sort(arr, left, right);
+        return;
+    }
+    
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+        int size = right - left + 1;
+        
+        // Only spawn parallel tasks for large arrays and limited recursion depth
+        // depth < 4 limits task creation to avoid excessive overhead
+        // (2^4 = 16 tasks max, good for most multi-core systems)
+        if (size >= PARALLEL_THRESHOLD && depth < 4) {
+            // Spawn task to sort left half
+            #pragma omp task shared(arr, temp)
+            {
+                merge_sort_parallel(arr, temp, left, mid, depth + 1);
+            }
+            
+            // Spawn task to sort right half
+            #pragma omp task shared(arr, temp)
+            {
+                merge_sort_parallel(arr, temp, mid + 1, right, depth + 1);
+            }
+            
+            // Wait for both tasks to complete before merging
+            #pragma omp taskwait
+        } else {
+            // Fall back to sequential for small arrays or deep recursion
+            merge_sort_sequential(arr, temp, left, mid);
+            merge_sort_sequential(arr, temp, mid + 1, right);
+        }
+        
+        // Early termination check
+        if (arr[mid] <= arr[mid + 1]) {
+            return;
+        }
+        
+        merge(arr, temp, left, mid, right);
+    }
 }
 
+// Main Entry Point - DO NOT CHANGE FUNCTION SIGNATURE
+void baseline_merge_sort(sort_type* arr, int n) {
+    if (n <= 1) return;
+    
+    // Allocate temporary array once (memory optimization)
+    // This avoids repeated malloc/free calls during recursion
+    sort_type* temp = (sort_type*)malloc(n * sizeof(sort_type));
+    if (!temp) { 
+        fprintf(stderr, "Malloc failed\n"); 
+        exit(1); 
+    }
+    
+    // Use parallel sorting for large arrays, sequential for small
+    if (n >= PARALLEL_THRESHOLD) {
+        #pragma omp parallel
+        {
+            #pragma omp single
+            {
+                merge_sort_parallel(arr, temp, 0, n - 1, 0);
+            }
+        }
+    } else {
+        merge_sort_sequential(arr, temp, 0, n - 1);
+    }
+    
+    free(temp);
+}
+ 
 //----------------------------------------------------------------------------------------------------------------
 //DO NOT CHANGE THIS PART BELOW
 
