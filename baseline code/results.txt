@@ -1,0 +1,119 @@
+============================================================
+       RUNNING LARGE SCALE TEST: 1 GB
+============================================================
+[INFO] Dataset Configuration:
+   - Size:   1.0737 GB
+   - Count:  268435456 elements
+[INFO] Allocating Memory...
+[INFO] Generating random 32-bit integers...
+[INFO] Sorting...
+[INFO] Verifying correctness...
+
+[RESULT] SUCCESS!
+   - Time Taken:   35.9200 seconds
+   - Throughput:   0.0278 GB/s
+   - Est. Cost:    $0.00099778 (Total for run)
+   - COST PER GB:  $0.00099778 / GB
+     (Based on hardware rate of $0.10/hr)
+============================================================
+
+============================================================
+       RUNNING LARGE SCALE TEST: 2 GB
+============================================================
+[INFO] Dataset Configuration:
+   - Size:   2.1475 GB
+   - Count:  536870912 elements
+[INFO] Allocating Memory...
+[INFO] Generating random 32-bit integers...
+[INFO] Sorting...
+[INFO] Verifying correctness...
+
+[RESULT] SUCCESS!
+   - Time Taken:   74.0976 seconds
+   - Throughput:   0.0270 GB/s
+   - Est. Cost:    $0.00205827 (Total for run)
+   - COST PER GB:  $0.00102913 / GB
+     (Based on hardware rate of $0.10/hr)
+============================================================
+
+============================================================
+       RUNNING LARGE SCALE TEST: 4 GB
+============================================================
+[INFO] Dataset Configuration:
+   - Size:   4.2950 GB
+   - Count:  1073741824 elements
+[INFO] Allocating Memory...
+[INFO] Generating random 32-bit integers...
+[INFO] Sorting...
+[INFO] Verifying correctness...
+
+[RESULT] SUCCESS!
+   - Time Taken:   153.6587 seconds
+   - Throughput:   0.0260 GB/s
+   - Est. Cost:    $0.00426830 (Total for run)
+   - COST PER GB:  $0.00106707 / GB
+     (Based on hardware rate of $0.10/hr)
+============================================================
+
+
+============================================================
+SIMD:
+============================================================
+
+
+============================================================
+       RUNNING LARGE SCALE TEST: 1 GB
+============================================================
+[INFO] Dataset Configuration:
+   - Size:   1.0737 GB
+   - Count:  268435456 elements
+[INFO] Allocating Memory...
+[INFO] Generating random 32-bit integers...
+[INFO] Sorting...
+[INFO] Verifying correctness...
+
+[RESULT] SUCCESS!
+   - Time Taken:   31.4253 seconds
+   - Throughput:   0.0318 GB/s
+   - Est. Cost:    $0.00087293 (Total for run)
+   - COST PER GB:  $0.00087293 / GB
+     (Based on hardware rate of $0.10/hr)
+============================================================
+
+============================================================
+       RUNNING LARGE SCALE TEST: 2 GB
+============================================================
+[INFO] Dataset Configuration:
+   - Size:   2.1475 GB
+   - Count:  536870912 elements
+[INFO] Allocating Memory...
+[INFO] Generating random 32-bit integers...
+[INFO] Sorting...
+[INFO] Verifying correctness...
+
+[RESULT] SUCCESS!
+   - Time Taken:   65.4309 seconds
+   - Throughput:   0.0306 GB/s
+   - Est. Cost:    $0.00181752 (Total for run)
+   - COST PER GB:  $0.00090876 / GB
+     (Based on hardware rate of $0.10/hr)
+============================================================
+
+============================================================
+       RUNNING LARGE SCALE TEST: 4 GB
+============================================================
+[INFO] Dataset Configuration:
+   - Size:   4.2950 GB
+   - Count:  1073741824 elements
+[INFO] Allocating Memory...
+[INFO] Generating random 32-bit integers...
+[INFO] Sorting...
+[INFO] Verifying correctness...
+
+[RESULT] SUCCESS!
+   - Time Taken:   136.0717 seconds
+   - Throughput:   0.0294 GB/s
+   - Est. Cost:    $0.00377977 (Total for run)
+   - COST PER GB:  $0.00094494 / GB
+     (Based on hardware rate of $0.10/hr)
+============================================================
