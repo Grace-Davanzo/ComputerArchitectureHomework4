@@ -63,8 +63,8 @@ static void merge_sort_recursive(sort_type* arr, sort_type* temp, int left, int 
         int mid = left + (right - left) / 2;
         
         // Recursively sort left and right halves
-        merge_sort_sequential(arr, temp, left, mid);
-        merge_sort_sequential(arr, temp, mid + 1, right);
+        merge_sort_recursive(arr, temp, left, mid);
+        merge_sort_recursive(arr, temp, mid + 1, right);
         
         // OPTIMIZATION 3: Early termination - skip merge if already sorted
         // If the last element of left subarray <= first element of right subarray,
