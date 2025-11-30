@@ -65,11 +65,6 @@ static void merge_no_copy(sort_type* src, sort_type* dst, int left, int mid, int
     while (j <= right) dst[k++] = src[j++];
 }
 
-// Legacy merge function (kept for compatibility)
-void merge(sort_type* arr, sort_type* temp, int left, int mid, int right) {
-    merge_no_copy(arr, temp, left, mid, right);
-    memcpy(arr + left, temp + left, (right - left + 1) * sizeof(sort_type));
-}
 
 // ADVANCED: Cache-blocked merge for very large arrays
 // Processes data in cache-sized blocks for better locality
@@ -166,32 +161,10 @@ static void merge_sort_pingpong(sort_type* arr, sort_type* temp, int left, int r
     }
 }
 
-// Legacy recursive function (kept for compatibility)
-static void merge_sort_recursive(sort_type* arr, sort_type* temp, int left, int right) {
-    // OPTIMIZATION 2: Hybrid algorithm - use insertion sort for small subarrays
-    if (right - left + 1 <= INSERTION_SORT_THRESHOLD) {
-        insertion_sort(arr, left, right);
-        return;
-    }
-    
-    if (left < right) {
-        int mid = left + (right - left) / 2;
-        
-        // Recursively sort left and right halves
-        merge_sort_recursive(arr, temp, left, mid);
-        merge_sort_recursive(arr, temp, mid + 1, right);
-        
-        // OPTIMIZATION 3: Early termination - skip merge if already sorted
-        if (arr[mid] <= arr[mid + 1]) {
-            return;
-        }
-        
-        merge(arr, temp, left, mid, right);
-    }
-}
+
 
 // ULTIMATE: Fully optimized merge sort with all techniques
-static void merge_sort_ultimate(sort_type* arr, sort_type* temp, int left, int right, bool result_in_temp) {
+static void merge_sort_combined(sort_type* arr, sort_type* temp, int left, int right, bool result_in_temp) {
     int size = right - left + 1;
     
     // Base case: use insertion sort for small subarrays
@@ -207,8 +180,8 @@ static void merge_sort_ultimate(sort_type* arr, sort_type* temp, int left, int r
         int mid = left + (right - left) / 2;
         
         // Recursively sort both halves - results go to temp
-        merge_sort_ultimate(arr, temp, left, mid, true);
-        merge_sort_ultimate(arr, temp, mid + 1, right, true);
+        merge_sort_combined(arr, temp, left, mid, true);
+        merge_sort_combined(arr, temp, mid + 1, right, true);
         
         // Early termination check
         if (temp[mid] <= temp[mid + 1]) {
@@ -230,8 +203,8 @@ static void merge_sort_ultimate(sort_type* arr, sort_type* temp, int left, int r
     }
 }
 
-// OPTIMIZED: Cache-optimized merge sort with preallocated buffers
-void optimized_merge_sort(sort_type* arr, int n) {
+
+void baseline_merge_sort(sort_type* arr, int n) {
     if (n <= 1) return;
     
     // OPTIMIZATION 1: Preallocate merge buffer ONCE at top level
@@ -242,17 +215,8 @@ void optimized_merge_sort(sort_type* arr, int n) {
     }
     
     // Use ultimate optimized version
-    merge_sort_ultimate(arr, temp, 0, n - 1, false);
+    merge_sort_combined(arr, temp, 0, n - 1, false);
     
-    free(temp);
-}
-
-// Main Entry Point (legacy version - kept for compatibility)
-void baseline_merge_sort(sort_type* arr, int n) {
-    if (n <= 1) return;
-    sort_type* temp = (sort_type*)malloc(n * sizeof(sort_type));
-    if (!temp) { fprintf(stderr, "Malloc failed\n"); exit(1); }
-    merge_sort_recursive(arr, temp, 0, n - 1);
     free(temp);
 }
 
@@ -409,61 +373,8 @@ int main() {
 
     // HIGH RAM USAGE
     run_gb_test(4);  // Requires ~8GB RAM
-    run_gb_test(8);  // Requires ~16GB RAM
+    //run_gb_test(8);  // Requires ~16GB RAM
     //run_gb_test(10); // Requires ~20GB RAM
-    
-    // PERFORMANCE COMPARISON: baseline vs optimized
-    printf("\n============================================================\n");
-    printf("       PERFORMANCE COMPARISON: Baseline vs Optimized\n");
-    printf("============================================================\n");
-    
-    int cmp_n = 10000000; // 10 million elements
-    printf("[INFO] Allocating test arrays (%d elements)...\n", cmp_n);
-    sort_type* arr1 = (sort_type*)malloc(cmp_n * sizeof(sort_type));
-    sort_type* arr2 = (sort_type*)malloc(cmp_n * sizeof(sort_type));
-    
-    if (arr1 && arr2) {
-        // Generate identical random data
-        srand(12345);
-        for (int i = 0; i < cmp_n; i++) {
-            uint32_t r = ((rand() & 0xFFFF) << 16) | (rand() & 0xFFFF);
-            arr1[i] = arr2[i] = (sort_type)r;
-        }
-        
-        // Test baseline
-        printf("\n[TEST] Running BASELINE merge sort...\n");
-        clock_t start1 = clock();
-        baseline_merge_sort(arr1, cmp_n);
-        clock_t end1 = clock();
-        double time1 = ((double)(end1 - start1)) / CLOCKS_PER_SEC;
-        bool correct1 = verify_sorted(arr1, cmp_n);
-        printf("   Result: %s in %.4f sec\n", correct1 ? "PASS" : "FAIL", time1);
-        
-        // Test optimized
-        printf("\n[TEST] Running OPTIMIZED merge sort...\n");
-        clock_t start2 = clock();
-        optimized_merge_sort(arr2, cmp_n);
-        clock_t end2 = clock();
-        double time2 = ((double)(end2 - start2)) / CLOCKS_PER_SEC;
-        bool correct2 = verify_sorted(arr2, cmp_n);
-        printf("   Result: %s in %.4f sec\n", correct2 ? "PASS" : "FAIL", time2);
-        
-        // Compare
-        if (correct1 && correct2) {
-            double speedup = time1 / time2;
-            double improvement = ((time1 - time2) / time1) * 100.0;
-            printf("\n[COMPARISON]\n");
-            printf("   Baseline:   %.4f sec\n", time1);
-            printf("   Optimized:  %.4f sec\n", time2);
-            printf("   Speedup:    %.2fx\n", speedup);
-            printf("   Improvement: %.1f%% faster\n", improvement);
-        }
-        
-        free(arr1);
-        free(arr2);
-    } else {
-        printf("[ERROR] Could not allocate comparison arrays\n");
-    }
     
     printf("============================================================\n");
     

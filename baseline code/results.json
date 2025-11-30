@@ -39,10 +39,10 @@
         "CostperGB":0.00564028
     },
     "Basic Optimized":{
-        "Time": 0,
-        "Throughput":0,
-        "Cost":0,
-        "CostperGB":0
+        "Time": 669.0370,
+        "Throughput":0.0060,
+        "Cost":0.01858436,
+        "CostperGB":0.00464609 
     }}
 ]
 }
