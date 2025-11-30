@@ -8,11 +8,11 @@
         "Cost":0.00536363,
         "CostperGB":0.00536363
     },
-    "Optimized":{
-        "Time": 0,
-        "Throughput":0,
-        "Cost":0,
-        "CostperGB":0
+    "Basic Optimized":{
+        "Time": 157.1575,
+        "Throughput":0.0064,
+        "Cost":0.00436549,
+        "CostperGB":0.00436549
     }},
     {"Gigabytes": 2,
     "Size": 2.1475,
@@ -23,11 +23,11 @@
         "Cost":0.01115531,
         "CostperGB":0.00557765
     },
-    "Optimized":{
-        "Time": 0,
-        "Throughput":0,
-        "Cost":0,
-        "CostperGB":0
+    "Basic Optimized":{
+        "Time": 325.2530,
+        "Throughput":0.0061,
+        "Cost":0.00903481,
+        "CostperGB":0.00451740
     }},
     {"Gigabytes": 4,
     "Size": 4.2950,
@@ -38,7 +38,7 @@
         "Cost":0.02256112,
         "CostperGB":0.00564028
     },
-    "Optimized":{
+    "Basic Optimized":{
         "Time": 0,
         "Throughput":0,
         "Cost":0,
