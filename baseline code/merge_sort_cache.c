@@ -120,65 +120,6 @@ void merge(sort_type* arr, sort_type* temp, int left, int mid, int right) {
     while (j <= right) temp[k++] = arr[j++];
     memcpy(arr + left, temp + left, (right - left + 1) * sizeof(sort_type));
 }
-// OPTIMIZED: Ping-pong recursive merge sort
-// 'depth' parameter tracks recursion level to alternate buffers
-// Even depth: result goes in 'arr', Odd depth: result goes in 'temp'
-static void merge_sort_pingpong(sort_type* arr, sort_type* temp, int left, int right, int depth) {
-    // OPTIMIZATION 2: Hybrid algorithm - use insertion sort for small subarrays
-    if (right - left + 1 <= INSERTION_SORT_THRESHOLD) {
-        insertion_sort(arr, left, right);
-        // If at odd depth, copy sorted section to temp (since caller expects it there)
-        if (depth & 1) {
-            memcpy(temp + left, arr + left, (right - left + 1) * sizeof(sort_type));
-        }
-        return;
-    }
-    
-    if (left < right) {
-        int mid = left + (right - left) / 2;
-        
-        // Recursively sort left and right halves at next depth level
-        merge_sort_pingpong(arr, temp, left, mid, depth + 1);
-        merge_sort_pingpong(arr, temp, mid + 1, right, depth + 1);
-        
-        // After recursion, data is in 'arr' if depth+1 is even, 'temp' if odd
-        bool data_in_temp = (depth + 1) & 1;
-        
-        // OPTIMIZATION 3: Early termination - skip merge if already sorted
-        if (data_in_temp) {
-            if (temp[mid] <= temp[mid + 1]) {
-                if (!(depth & 1)) {
-                    // Need to copy to arr
-                    memcpy(arr + left, temp + left, (right - left + 1) * sizeof(sort_type));
-                }
-                return;
-            }
-            // Merge from temp to arr or vice versa based on target depth
-            if (depth & 1) {
-                merge_no_copy(temp, temp, left, mid, right); // Stay in temp
-            } else {
-                merge_no_copy(temp, arr, left, mid, right); // Move to arr
-            }
-        } else {
-            if (arr[mid] <= arr[mid + 1]) {
-                if (depth & 1) {
-                    // Need to copy to temp
-                    memcpy(temp + left, arr + left, (right - left + 1) * sizeof(sort_type));
-                }
-                return;
-            }
-            // Merge from arr
-            if (depth & 1) {
-                merge_no_copy(arr, temp, left, mid, right); // Move to temp
-            } else {
-                merge_no_copy(arr, arr, left, mid, right); // Stay in arr (need temp copy)
-                // This case needs special handling - fall back to standard merge
-                merge(arr, temp, left, mid, right);
-                return;
-            }
-        }
-    }
-}
 
 
 
