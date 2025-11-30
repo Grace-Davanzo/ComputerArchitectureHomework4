@@ -4,10 +4,13 @@
 #include <stdbool.h>
 #include <limits.h>
 #include <time.h>
-
+// Cache Optimized Merge Sort Implementation
+// Optimized for Ubunut 24 CLoud Lab Instance with following Cache parameters:
+//
+// Changes made
 // 32-bit integer type
 typedef int32_t sort_type;
-
+#define INSERTION_SORT_THRESHOLD 64 
 // Helper
 void print_array(sort_type* arr, int n) {
     printf("[");
@@ -16,7 +19,21 @@ void print_array(sort_type* arr, int n) {
     }
     printf("]\n");
 }
-
+// Insertion sort for small subarrays
+// Exhibits excellent cache locality (sequential memory access)
+static void insertion_sort(sort_type* arr, int left, int right) {
+    for (int i = left + 1; i <= right; i++) {
+        sort_type key = arr[i];
+        int j = i - 1;
+        
+        // Shift elements greater than key to the right
+        while (j >= left && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+}
 // Standard Merge Logic
 void merge(sort_type* arr, sort_type* temp, int left, int mid, int right) {
     int i = left;
@@ -33,15 +50,29 @@ void merge(sort_type* arr, sort_type* temp, int left, int mid, int right) {
 
     while (i <= mid) temp[k++] = arr[i++];
     while (j <= right) temp[k++] = arr[j++];
-    for (i = left; i <= right; i++) arr[i] = temp[i];
+    memcpy(arr + left, temp + left, (right - left + 1) * sizeof(sort_type));
 }
-
-// Recursive Sort
-void merge_sort_recursive(sort_type* arr, sort_type* temp, int left, int right) {
+static void merge_sort_recursive(sort_type* arr, sort_type* temp, int left, int right) {
+    // OPTIMIZATION 2: Hybrid algorithm - use insertion sort for small subarrays
+    if (right - left + 1 <= INSERTION_SORT_THRESHOLD) {
+        insertion_sort(arr, left, right);
+        return;
+    }
+    
     if (left < right) {
         int mid = left + (right - left) / 2;
-        merge_sort_recursive(arr, temp, left, mid);
-        merge_sort_recursive(arr, temp, mid + 1, right);
+        
+        // Recursively sort left and right halves
+        merge_sort_sequential(arr, temp, left, mid);
+        merge_sort_sequential(arr, temp, mid + 1, right);
+        
+        // OPTIMIZATION 3: Early termination - skip merge if already sorted
+        // If the last element of left subarray <= first element of right subarray,
+        // the entire array is already in sorted order
+        if (arr[mid] <= arr[mid + 1]) {
+            return;
+        }
+        
         merge(arr, temp, left, mid, right);
     }
 }
@@ -208,7 +239,7 @@ int main() {
 
     // HIGH RAM USAGE
     run_gb_test(4);  // Requires ~8GB RAM
-    //run_gb_test(8);  // Requires ~16GB RAM
+    run_gb_test(8);  // Requires ~16GB RAM
     //run_gb_test(10); // Requires ~20GB RAM
     
     return 0;
