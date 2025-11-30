@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <limits.h>
 #include <time.h>
+#include <string.h>
 // Cache Optimized Merge Sort Implementation
 // Optimized for Ubunut 24 CLoud Lab Instance with following Cache parameters:
 //
