@@ -44,7 +44,6 @@ static void insertion_sort(sort_type* arr, int left, int right) {
         arr[j + 1] = key;
     }
 }
-// OPTIMIZED: Ping-Pong Merge (no memcpy needed)
 // Merges from 'src' into 'dst' - caller alternates buffers
 static void merge_no_copy(sort_type* src, sort_type* dst, int left, int mid, int right) {
     int i = left;
@@ -66,7 +65,6 @@ static void merge_no_copy(sort_type* src, sort_type* dst, int left, int mid, int
 }
 
 
-// ADVANCED: Cache-blocked merge for very large arrays
 // Processes data in cache-sized blocks for better locality
 static void merge_blocked(sort_type* src, sort_type* dst, int left, int mid, int right) {
     int size = right - left + 1;
@@ -123,7 +121,7 @@ void merge(sort_type* arr, sort_type* temp, int left, int mid, int right) {
 
 
 
-// ULTIMATE: Fully optimized merge sort with all techniques
+// ULTIMATE: Fully cache optimized merge sort with all techniques
 static void merge_sort_combined(sort_type* arr, sort_type* temp, int left, int right, bool result_in_temp) {
     int size = right - left + 1;
     
