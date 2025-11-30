@@ -20,7 +20,7 @@ typedef int32_t sort_type;
 
 // Tuning parameters
 #define INSERTION_SORT_THRESHOLD 64  // Use insertion sort for subarrays <= this size
-#define CACHE_BLOCK_SIZE 8192        // Process in cache-friendly blocks (~32KB for 4-byte ints) 
+#define CACHE_BLOCK_SIZE 16        // Process in cache-friendly blocks (~32KB for 4-byte ints) 
 // Helper
 void print_array(sort_type* arr, int n) {
     printf("[");
