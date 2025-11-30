@@ -101,6 +101,25 @@ static void merge_blocked(sort_type* src, sort_type* dst, int left, int mid, int
     while (i <= mid) dst[k++] = src[i++];
     while (j <= right) dst[k++] = src[j++];
 }
+
+// Standard Merge Logic
+void merge(sort_type* arr, sort_type* temp, int left, int mid, int right) {
+    int i = left;
+    int j = mid + 1;
+    int k = left;
+
+    while (i <= mid && j <= right) {
+        if (arr[i] <= arr[j]) {
+            temp[k++] = arr[i++];
+        } else {
+            temp[k++] = arr[j++];
+        }
+    }
+
+    while (i <= mid) temp[k++] = arr[i++];
+    while (j <= right) temp[k++] = arr[j++];
+    memcpy(arr + left, temp + left, (right - left + 1) * sizeof(sort_type));
+}
 // OPTIMIZED: Ping-pong recursive merge sort
 // 'depth' parameter tracks recursion level to alternate buffers
 // Even depth: result goes in 'arr', Odd depth: result goes in 'temp'
