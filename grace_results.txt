@@ -1,0 +1,87 @@
+Implemented by: Grace
+
+=== Running Test: Small Random (n=6) ===
+Before: [12, 7, 14, 9, 10, 11]
+After:  [7, 9, 10, 11, 12, 14]
+RESULT: PASSED [0.000002 sec]
+
+=== Running Test: 32-bit Edge Cases (n=7) ===
+Before: [2147483647, 0, -2147483648, -1, 1, 2147483646, -2147483647]
+After:  [-2147483648, -2147483647, -1, 0, 1, 2147483646, 2147483647]
+RESULT: PASSED [0.000001 sec]
+
+=== Running Test: Already Sorted (n=8) ===
+Before: [1, 2, 3, 4, 5, 6, 7, 8]
+After:  [1, 2, 3, 4, 5, 6, 7, 8]
+RESULT: PASSED [0.000001 sec]
+
+=== Running Test: Reverse Sorted (n=7) ===
+Before: [100, 90, 80, 70, 60, 50, 40]
+After:  [40, 50, 60, 70, 80, 90, 100]
+RESULT: PASSED [0.000001 sec]
+
+=== Running Test: Duplicates (n=6) ===
+Before: [5, 1, 5, 2, 5, 3]
+After:  [1, 2, 3, 5, 5, 5]
+RESULT: PASSED [0.000001 sec]
+
+=== Running Test: Large Random (100k) (n=100000) ===
+RESULT: PASSED [0.007279 sec]
+
+============================================================
+       RUNNING LARGE SCALE TEST: 1 GB
+============================================================
+[INFO] Dataset Configuration:
+   - Size:   1.0737 GB
+   - Count:  268435456 elements
+[INFO] Allocating Memory...
+[INFO] Generating random 32-bit integers...
+[INFO] Sorting...
+[INFO] Verifying correctness...
+
+[RESULT] SUCCESS!
+   - Time Taken:   34.4437 seconds
+   - Throughput:   0.0290 GB/s
+   - Est. Cost:    $0.00095677 (Total for run)
+   - COST PER GB:  $0.00095677 / GB
+     (Based on hardware rate of $0.10/hr)
+============================================================
+
+============================================================
+       RUNNING LARGE SCALE TEST: 2 GB
+============================================================
+[INFO] Dataset Configuration:
+   - Size:   2.1475 GB
+   - Count:  536870912 elements
+[INFO] Allocating Memory...
+[INFO] Generating random 32-bit integers...
+[INFO] Sorting...
+[INFO] Verifying correctness...
+
+[RESULT] SUCCESS!
+   - Time Taken:   72.0306 seconds
+   - Throughput:   0.0278 GB/s
+   - Est. Cost:    $0.00200085 (Total for run)
+   - COST PER GB:  $0.00100043 / GB
+     (Based on hardware rate of $0.10/hr)
+============================================================
+
+============================================================
+       RUNNING LARGE SCALE TEST: 4 GB
+============================================================
+[INFO] Dataset Configuration:
+   - Size:   4.2950 GB
+   - Count:  1073741824 elements
+[INFO] Allocating Memory...
+[INFO] Generating random 32-bit integers...
+[INFO] Sorting...
+[INFO] Verifying correctness...
+
+[RESULT] SUCCESS!
+   - Time Taken:   148.8092 seconds
+   - Throughput:   0.0269 GB/s
+   - Est. Cost:    $0.00413359 (Total for run)
+   - COST PER GB:  $0.00103340 / GB
+     (Based on hardware rate of $0.10/hr)
+============================================================
+============================================================
