@@ -124,41 +124,39 @@ void merge(sort_type* arr, sort_type* temp, int left, int mid, int right) {
 // ULTIMATE: Fully cache optimized merge sort with all techniques
 static void merge_sort_combined(sort_type* arr, sort_type* temp, int left, int right, bool result_in_temp) {
     int size = right - left + 1;
-    
-    // Base case: use insertion sort for small subarrays
+
+    // Base case: perform insertion sort into the proper destination buffer
     if (size <= INSERTION_SORT_THRESHOLD) {
-        insertion_sort(arr, left, right);
         if (result_in_temp) {
             memcpy(temp + left, arr + left, size * sizeof(sort_type));
+            insertion_sort(temp, left, right);
+        } else {
+            // sort in-place in arr
+            insertion_sort(arr, left, right);
         }
         return;
     }
-    
-    if (left < right) {
-        int mid = left + (right - left) / 2;
-        
-        // Recursively sort both halves - results go to temp
-        merge_sort_combined(arr, temp, left, mid, true);
-        merge_sort_combined(arr, temp, mid + 1, right, true);
-        
-        // Early termination check
-        if (temp[mid] <= temp[mid + 1]) {
-            if (!result_in_temp) {
-                memcpy(arr + left, temp + left, size * sizeof(sort_type));
-            }
-            return;
+
+    int mid = left + (right - left) / 2;
+
+    // Recurse with flipped destination so children write into the opposite buffer
+    merge_sort_combined(arr, temp, left, mid, !result_in_temp);
+    merge_sort_combined(arr, temp, mid + 1, right, !result_in_temp);
+
+    // Determine source and destination buffers for this merge
+    sort_type* src = !result_in_temp ? temp : arr;
+    sort_type* dst = result_in_temp ? temp : arr;
+
+    // Early termination: already ordered in source
+    if (src[mid] <= src[mid + 1]) {
+        if (src != dst) {
+            memcpy(dst + left, src + left, size * sizeof(sort_type));
         }
-        
-        // Merge from temp to appropriate destination
-        if (result_in_temp) {
-            // Need to merge temp->temp, use arr as scratch space
-            merge_blocked(temp, arr, left, mid, right);
-            memcpy(temp + left, arr + left, size * sizeof(sort_type));
-        } else {
-            // Merge temp->arr directly
-            merge_blocked(temp, arr, left, mid, right);
-        }
+        return;
     }
+
+    // Merge from src into dst (cache-blocked merge)
+    merge_blocked(src, dst, left, mid, right);
 }
 
 
